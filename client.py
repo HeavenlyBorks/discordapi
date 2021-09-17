@@ -2,11 +2,15 @@ import asyncio
 import websockets
 import random
 import json
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # INTERVAL = 1
 # S = ""
 # RESPONSE = ""
-BOT_TOKEN = "ODg3Mzc3MDMzMDYyMTM3ODk3.YUDQQw.xWCwEkepJfoOTluMXUMyZTYwOoo"
+BOT_TOKEN = os.getenv("DISCORD_TOKEN")
+print(BOT_TOKEN)
 wssURL = "wss://gateway.discord.gg/?v=8&encoding=json"
 
 # app = Flask(__name__)
@@ -130,8 +134,8 @@ class Client():
           await self.send(connection, json.dumps(self.identify_json))
         elif op == 10:
           self.interval = message["d"]["heartbeat_interval"]
-      except websockets.exceptions.ConnectionClosed:
-        print('Connection with server closed')
+      except websockets.exceptions.ConnectionClosed as e:
+        print(str(e) + " - listen")
         break
   
   async def quick_heartbeat(self, connection):
@@ -142,10 +146,8 @@ class Client():
         "d": self.last_s
       }
       await connection.send(json.dumps(data))
-    except websockets.exceptions.ConnectionClosed:
-      print('Connection with server closed')
     except Exception as e:
-      print(e)
+      print(str(e) + ' - heartbeat quick')
 
   async def heartbeat(self, connection):
     """send a heartbeat every interval"""
@@ -157,7 +159,5 @@ class Client():
         }
         await connection.send(json.dumps(data))
         await asyncio.sleep(self.interval/1000)
-      except websockets.exceptions.ConnectionClosed:
-        print('Connection with server closed')
       except Exception as e:
-        print(e)
+        print(str(e) + ' - heartbeat')
