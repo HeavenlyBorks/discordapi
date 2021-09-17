@@ -1,5 +1,10 @@
 __pycache__/
+*/__pycache__/
 .venv/
 .env
 # im just using these for visualization purposes
 json/
+#replit
+.replit
+*.lock
+*.toml

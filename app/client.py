@@ -53,8 +53,9 @@ class Client():
       try:
         message = await connection.recv()
         message = json.loads(message)
+        pretty_message = json.dumps(message, indent=2)
         op = message["op"]
-        print('Received message from server: \n' + str(message))
+        print('Received message from server: \n' + str(pretty_message))
         if op == 0:
           self.last_s = message["s"]
           title = message["t"]
@@ -85,7 +86,7 @@ class Client():
           await self.send(connection, json.dumps(self.identify_json))
         elif op == 10:
           self.interval = message["d"]["heartbeat_interval"]
-      except websockets.exceptions.ConnectionClosed as e:
+      except Exception as e:
         print(str(e) + " - listen")
         break
   
