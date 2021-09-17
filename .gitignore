@@ -1,3 +1,5 @@
 __pycache__/
 .venv/
 .env
+# im just using these for visualization purposes
+*.json

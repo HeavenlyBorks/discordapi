@@ -1,5 +1,5 @@
 import asyncio
-from client import Client
+from app.client import Client
 
 if __name__ == '__main__':
     # Creating client object

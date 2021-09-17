@@ -126,7 +126,11 @@ class Client():
         if op == 0:
           self.last_s = message["s"]
           title = message["t"]
+          with open('guild_create.json', 'w', encoding='utf-8') as f:
+            json.dump(message, f, ensure_ascii=False, indent=2)
           if title == "READY":
+            with open("ready.json", "w", encoding="utf-8") as f:
+              json.dump(message, f, ensure_ascii=False, indent=2)
             self.last_id = message["d"]["session_id"]
         elif op == 1:
           await self.quick_heartbeat(connection)
