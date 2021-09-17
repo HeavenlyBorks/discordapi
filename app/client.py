@@ -128,10 +128,26 @@ class Client():
           title = message["t"]
           with open('guild_create.json', 'w', encoding='utf-8') as f:
             json.dump(message, f, ensure_ascii=False, indent=2)
+          # on_ready
           if title == "READY":
-            with open("ready.json", "w", encoding="utf-8") as f:
-              json.dump(message, f, ensure_ascii=False, indent=2)
+            # with open("ready.json", "w", encoding="utf-8") as f:
+              # json.dump(message, f, ensure_ascii=False, indent=2)
             self.last_id = message["d"]["session_id"]
+          # on_message
+          elif title == "MESSAGE_CREATE":
+            # with open("message_create.json", "w", encoding="utf-8") as f:
+              # json.dump(message, f, ensure_ascii=False, indent=2)
+            pass
+          # on_interaction
+          elif title == "INTERACTION_CREATE":
+            # with open("interaction_create.json", "w", encoding="utf-8") as f:
+              # json.dump(message, f, ensure_ascii=False, indent=2)
+            pass
+          # on_guild_create
+          elif title == "GUILD_CREATE":
+            # with open("guild_create.json", "w", encoding="utf-8") as f:
+              # json.dump(message, f, ensure_ascii=False, indent=2)
+            pass
         elif op == 1:
           await self.quick_heartbeat(connection)
         elif op == 9:
