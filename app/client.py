@@ -6,77 +6,9 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-# INTERVAL = 1
-# S = ""
-# RESPONSE = ""
 BOT_TOKEN = os.getenv("DISCORD_TOKEN")
 print(BOT_TOKEN)
 wssURL = "wss://gateway.discord.gg/?v=8&encoding=json"
-
-# app = Flask(__name__)
-# prefix = "/api/interactions/"
-
-# async def start(loop):
-#   async with websockets.connect(wssURL) as WS:
-#     global INTERVAL
-#     global S
-#     global RESPONSE
-#     RESPONSE = await WS.recv()
-#     RESPONSE = json.loads(RESPONSE)
-#     INTERVAL = RESPONSE["d"]["heartbeat_interval"]
-#     S = RESPONSE["s"]
-#     # data = {
-#     #   "op": 1,
-#     #   "d": S
-#     # }
-#     # await WS.send(json.dumps(data))
-#     identify_json = {
-#       "op": 2,
-#       "d": {
-#         "token": f"{BOT_TOKEN}",
-#         "intents": 513,
-#         "properties": {
-#           "$os": "linux",
-#           "$browser": "my_library",
-#           "$device": "my_library"
-#         }
-#       }
-#     }
-#     await WS.send(json.dumps(identify_json))
-#     # r = await WS.recv()
-#     print("done with start")
-#     return WS
-
-# async def listen(WS):
-#     # print("listen")
-#     while True:
-#       try:
-#         r = await WS.recv()
-#         r = json.loads(r)
-#         # print(r)
-#         await asyncio.sleep(.1)
-#         if r["op"] == 0:
-#           print(r["t"])
-#         elif r["op"] == 1:
-#           ping(WS)
-#       except websockets.exceptions.ConnectionClosedOK:
-#         print("connection closed")
-#         break
-
-# async def ping(WS):
-#     while True:
-#       try:
-#         global INTERVAL
-#         global S
-#         # print("ping")
-#         data = {
-#           "op": 1,
-#           "d": S
-#         }
-#         await WS.send(json.dumps(data))
-#         await asyncio.sleep(INTERVAL)
-#       except websockets.exceptions.ConnectionClosedOK:
-#         print("connection closed")
 
 class Client():
   def __init__(self, json=False):
