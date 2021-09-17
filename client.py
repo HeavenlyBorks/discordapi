@@ -124,19 +124,29 @@ class Client():
           title = message["t"]
           if title == "READY":
             self.last_id = message["d"]["session_id"]
-        # elif op == 1:
-        #   await self.heartbeat(connection, 0, self.last_s)
+        elif op == 1:
+          await self.quick_heartbeat(connection)
         elif op == 9:
           await self.send(connection, json.dumps(self.identify_json))
         elif op == 10:
           self.interval = message["d"]["heartbeat_interval"]
-        # elif op == 11:
-        #   print(op)
-        #   await self.heartbeat(connection, self.interval)
       except websockets.exceptions.ConnectionClosed:
         print('Connection with server closed')
         break
   
+  async def quick_heartbeat(self, connection):
+    """send a single heartbeat with no interval"""
+    try:
+      data = {
+        "op": 1,
+        "d": self.last_s
+      }
+      await connection.send(json.dumps(data))
+    except websockets.exceptions.ConnectionClosed:
+      print('Connection with server closed')
+    except Exception as e:
+      print(e)
+
   async def heartbeat(self, connection):
     """send a heartbeat every interval"""
     while True:
