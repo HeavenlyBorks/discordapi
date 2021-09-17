@@ -1,9 +1,10 @@
+import sys
 import asyncio
 from app.client import Client
 
 if __name__ == '__main__':
     # Creating client object
-    client = Client()
+    client = Client(json=True) if sys.argv[0] else Client()
     loop = asyncio.get_event_loop()
     # Start connection and get client connection protocol
     connection = loop.run_until_complete(client.start(loop))

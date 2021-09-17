@@ -79,8 +79,8 @@ wssURL = "wss://gateway.discord.gg/?v=8&encoding=json"
 #         print("connection closed")
 
 class Client():
-  def __init__(self):
-    pass
+  def __init__(self, json=False):
+    self.json_v = json
   
   async def start(self, loop):
     self.loop = loop
@@ -126,28 +126,27 @@ class Client():
         if op == 0:
           self.last_s = message["s"]
           title = message["t"]
-          with open('guild_create.json', 'w', encoding='utf-8') as f:
-            json.dump(message, f, ensure_ascii=False, indent=2)
           # on_ready
           if title == "READY":
-            # with open("ready.json", "w", encoding="utf-8") as f:
-              # json.dump(message, f, ensure_ascii=False, indent=2)
+            if self.json_v:
+              with open("json/ready.json", "w", encoding="utf-8") as f:
+                json.dump(message, f, ensure_ascii=False, indent=2)
             self.last_id = message["d"]["session_id"]
           # on_message
           elif title == "MESSAGE_CREATE":
-            # with open("message_create.json", "w", encoding="utf-8") as f:
-              # json.dump(message, f, ensure_ascii=False, indent=2)
-            pass
+            if self.json_v:
+              with open("json/message_create.json", "w", encoding="utf-8") as f:
+                json.dump(message, f, ensure_ascii=False, indent=2)
           # on_interaction
           elif title == "INTERACTION_CREATE":
-            # with open("interaction_create.json", "w", encoding="utf-8") as f:
-              # json.dump(message, f, ensure_ascii=False, indent=2)
-            pass
+            if self.json_v:
+              with open("json/interaction_create.json", "w", encoding="utf-8") as f:
+                json.dump(message, f, ensure_ascii=False, indent=2)
           # on_guild_create
           elif title == "GUILD_CREATE":
-            # with open("guild_create.json", "w", encoding="utf-8") as f:
-              # json.dump(message, f, ensure_ascii=False, indent=2)
-            pass
+            if self.json_v:
+              with open("json/guild_create.json", "w", encoding="utf-8") as f:
+                json.dump(message, f, ensure_ascii=False, indent=2)
         elif op == 1:
           await self.quick_heartbeat(connection)
         elif op == 9:
