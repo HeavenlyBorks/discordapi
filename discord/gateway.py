@@ -1,3 +1,4 @@
+import discord
 import asyncio
 import websockets
 import random
@@ -48,7 +49,11 @@ class Gateway():
 		await connection.send(json.dumps(message))
 
 	async def listen(self, connection):
-		"""Listens for messages from the server"""
+		"""Listens to events from the gateway.
+
+		Args:
+			connection (connection): The connection to the gateway.
+		"""
 		while True:
 			try:
 				message = await connection.recv()
@@ -80,6 +85,8 @@ class Gateway():
 						if self.json_v:
 							with open("json/guild_create.json", "w", encoding="utf-8") as f:
 								json.dump(message, f, ensure_ascii=False, indent=2)
+						current_guild = discord.guild.Guild(message)
+						print(current_guild.name)
 				elif op == 1:
 					await self.quick_heartbeat(connection)
 				elif op == 9:

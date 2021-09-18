@@ -1,10 +1,14 @@
 import discord
+import json
+from munch import Munch, munchify
 
-class Channel():
-  def __init__(self, channel):
-    self.channel = channel["d"]
+class Channel(Munch):
+  def __init__(self, channel_obj):
+    # Turns this class into a munch.
+    super(Channel, self).__init__(channel_obj["d"])
+  
+  def __repr__(self):
+    return json.dumps(self)
 
-    # channel type
-    self.type = self.channel["type"]
-    # channel name
-    self.name = self.channel["name"]
+  def __str__(self):
+    return f"Guild {self.name}, id {self.id}"
