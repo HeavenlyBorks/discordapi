@@ -1,10 +1,11 @@
-from munch import Munch, munchify
-from discord.channel import Channel
+import discord
+from munch import Munch
 import json
 
 class Guild(Munch):
   def __init__(self, guild):
-    super(Guild, self).__init__(guild["d"])
+    super(Guild, self).__init__(guild)
+    self.channels = [discord.channel.Channel(channel) for channel in self.channels]
   
   def __repr__(self):
     return json.dumps(self)

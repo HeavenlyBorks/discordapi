@@ -1,10 +1,10 @@
 import sys
 import asyncio
-from discord.gateway import Gateway
+import discord
 
 if __name__ == '__main__':
     # Creating client object
-    gateway = Gateway(json=True) if sys.argv[0] == True else Gateway()
+    gateway = discord.gateway.Gateway(json=True) if sys.argv[0] == True else discord.gateway.Gateway()
     loop = asyncio.get_event_loop()
     # Start connection and get client connection protocol
     connection = loop.run_until_complete(gateway.start(loop))

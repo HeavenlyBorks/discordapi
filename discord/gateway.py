@@ -4,6 +4,7 @@ import websockets
 import random
 import json
 import os
+import requests
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -17,6 +18,7 @@ class Gateway():
   # """Represents a Discord Gateway."""
 	def __init__(self, json=False):
 		self.json_v = json
+		self.guilds = []
 
 	async def start(self, loop):
 		self.loop = loop
@@ -48,12 +50,14 @@ class Gateway():
 		"""Sends a message to the server"""
 		await connection.send(json.dumps(message))
 
-	async def listen(self, connection):
+	async def listen(self, connection):  # sourcery no-metrics
 		"""Listens to events from the gateway.
 
 		Args:
 			connection (connection): The connection to the gateway.
 		"""
+		# TODO: Rewrite pretty much this whole thing :p
+		# TODO: I have to make a requests function for sure, I could split up the listeners into a separate function.
 		while True:
 			try:
 				message = await connection.recv()
@@ -70,6 +74,10 @@ class Gateway():
 							with open("json/ready.json", "w", encoding="utf-8") as f:
 								json.dump(message, f, ensure_ascii=False, indent=2)
 						self.last_id = message["d"]["session_id"]
+						if message["d"]["user"]["bot"] == True:
+							self.user = discord.bot.Bot(message["d"]["user"])
+						else:
+							self.user = discord.user.User(message["d"]["user"])
 					# on_message
 					elif title == "MESSAGE_CREATE":
 						if self.json_v:
@@ -80,13 +88,22 @@ class Gateway():
 						if self.json_v:
 							with open("json/interaction_create.json", "w", encoding="utf-8") as f:
 								json.dump(message, f, ensure_ascii=False, indent=2)
+						inter = discord.interaction.Interaction(message["d"])
+						url = f"https://discord.com/api/v8/interactions/{inter.id}/{inter.token}/callback"
+						i_json = {
+							"type": 4,
+							"data": {
+								"content": "High Five!"
+							}
+						}
+						r = requests.post(url, json=i_json)
 					# on_guild_create
 					elif title == "GUILD_CREATE":
 						if self.json_v:
 							with open("json/guild_create.json", "w", encoding="utf-8") as f:
 								json.dump(message, f, ensure_ascii=False, indent=2)
-						current_guild = discord.guild.Guild(message)
-						print(current_guild.name)
+						guild = discord.guild.Guild(message["d"])
+						self.guilds.append(guild)
 				elif op == 1:
 					await self.quick_heartbeat(connection)
 				elif op == 9:
@@ -94,7 +111,8 @@ class Gateway():
 				elif op == 10:
 					self.interval = message["d"]["heartbeat_interval"]
 			except Exception as e:
-				print(str(e) + " - listen")
+				print(e)
+				print("- listen")
 				break
 
 	async def quick_heartbeat(self, connection):
