@@ -74,7 +74,7 @@ class Gateway():
 							with open("json/ready.json", "w", encoding="utf-8") as f:
 								json.dump(message, f, ensure_ascii=False, indent=2)
 						self.last_id = message["d"]["session_id"]
-						if message["d"]["user"]["bot"] == True:
+						if message["d"]["user"]["bot"]:
 							self.user = discord.bot.Bot(message["d"]["user"])
 						else:
 							self.user = discord.user.User(message["d"]["user"])
