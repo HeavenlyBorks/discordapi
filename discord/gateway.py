@@ -30,7 +30,7 @@ class Gateway():
 		self.last_s = response["s"]
 		data = {"op": 1, "d": self.last_s}
 		await self.connection.send(json.dumps(data))
-		self.identify_json = {
+		identify_json = {
 		    "op": 2,
 		    "d": {
 		        "token": f"{BOT_TOKEN}",
@@ -42,7 +42,7 @@ class Gateway():
 		        }
 		    }
 		}
-		await self.connection.send(json.dumps(self.identify_json))
+		await self.connection.send(json.dumps(identify_json))
 		print("done with start")
 		return self.connection
 
