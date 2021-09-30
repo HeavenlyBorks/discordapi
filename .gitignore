@@ -8,3 +8,6 @@ json/
 .replit
 *.lock
 *.toml
+
+# testing thing/example
+main.py
