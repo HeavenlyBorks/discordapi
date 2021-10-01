@@ -1,9 +1,9 @@
-from discord import bot
+import discord
 import requests
 import os
 
 urlBase = "https://discord.com/api/v8"
-bot = bot.Bot()
+bot = discord.Bot()
 
 token = os.environ['DISCORD_TOKEN']
 
@@ -14,17 +14,14 @@ async def on_message_create(data):
         "content": "Hello, World!",
         "tts": False,
         }
-    headers = {
-        "Authorization": f"Bot {token}"
-    }
     # r = await requests.get(urlBase + "/channels/887377482741862404")
-    print("it worky??")
     try:
-        if data["author"]["bot"]:
+        if "bot" in data["author"]:
             return
     except:
         pass
-    r = requests.post(urlBase + "/channels/887377482741862404/messages", json=payload, headers=headers)
-    print(r)
+    # r = requests.post(urlBase + "/channels/887377482741862404/messages", json=payload, headers=headers)
+    # print(r)
+    r = discord.request("POST", "/channels/887377482741862404/messages", payload, token)
 
 bot.start()

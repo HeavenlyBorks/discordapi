@@ -2,6 +2,12 @@ import asyncio
 import discord
 import sys
 import json
+import traceback
+import requests
+
+__all__ = (
+    "Bot",
+)
 
 class Bot():
     def __init__(self):
@@ -14,7 +20,7 @@ class Bot():
 
     def start(self):
         # Creating client object
-        gateway = discord.gateway.Gateway(json=True) if sys.argv[0] == True else discord.gateway.Gateway()
+        gateway = discord.Gateway(json=True) if sys.argv[0] == True else discord.Gateway()
         loop = asyncio.get_event_loop()
         # Start connection and get client connection protocol
         connection = loop.run_until_complete(gateway.start(loop))
@@ -83,6 +89,7 @@ class Bot():
                 elif op == 10:
                     self.interval = message["d"]["heartbeat_interval"]
             except Exception as e:
+                traceback.print_tb(e.__traceback__)
                 print(e)
                 print("- listen")
                 break

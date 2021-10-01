@@ -5,6 +5,7 @@ import random
 import json
 import os
 import requests
+import traceback
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -13,6 +14,21 @@ BOT_TOKEN = os.getenv("DISCORD_TOKEN")
 print(BOT_TOKEN)
 wssURL = "wss://gateway.discord.gg/?v=8&encoding=json"
 
+__all__ = (
+	"Gateway",
+	"request",
+)
+
+def request(method, path, data, auth):
+	base = "https://discord.com/api/v8"
+	headers = {
+		"Authorization": f"Bot {auth}"
+	}
+	if method == "POST":
+		r = requests.post(base + path, json=data, headers=headers)
+	elif method == "GET":
+		r = requests.get(base + path, json=data)
+	return r
 
 class Gateway():
   # """Represents a Discord Gateway."""
@@ -56,6 +72,7 @@ class Gateway():
 			data = {"op": 1, "d": self.last_s}
 			await connection.send(json.dumps(data))
 		except Exception as e:
+			traceback.print_tb(e.__traceback__)
 			print(str(e) + ' - heartbeat quick')
 
 	async def heartbeat(self, connection):
@@ -66,12 +83,10 @@ class Gateway():
 				await connection.send(json.dumps(data))
 				await asyncio.sleep(self.interval / 1000)
 			except Exception as e:
+				traceback.print_tb(e.__traceback__)
 				print(str(e) + ' - heartbeat')
 
-	async def request(self, method, path, data, token=None):
-		base = "https://discord.com/api/v8"
-		if method == "POST":
-			r = requests.post(base + path, json=data, headers=f"Bot {token}")
+	# [--- old listener ---]
 
 	# async def listen(self, connection):  # sourcery no-metrics
 	# 	"""Listens to events from the gateway.
