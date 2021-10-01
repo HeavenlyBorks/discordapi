@@ -28,8 +28,6 @@ class Bot():
     
     # event listener
     async def listen(self, connection):  # sourcery no-metrics
-        # TODO: Rewrite pretty much this whole thing :p
-        # TODO: I have to make a requests function for sure, I could split up the listeners into a separate function.
         while True:
             try:
                 message = await connection.recv()
