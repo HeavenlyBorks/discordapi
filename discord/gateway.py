@@ -31,16 +31,16 @@ class Gateway():
 		data = {"op": 1, "d": self.last_s}
 		await self.connection.send(json.dumps(data))
 		identify_json = {
-		    "op": 2,
-		    "d": {
-		        "token": f"{BOT_TOKEN}",
-		        "intents": 32767,
-		        "properties": {
-		            "$os": "linux",
-		            "$browser": "my_library",
-		            "$device": "my_library"
-		        }
-		    }
+			"op": 2,
+			"d": {
+				"token": f"{BOT_TOKEN}",
+				"intents": 32767,
+				"properties": {
+					"$os": "linux",
+					"$browser": "my_library",
+					"$device": "my_library"
+				}
+			}
 		}
 		await self.connection.send(json.dumps(identify_json))
 		print("done with start")
@@ -68,10 +68,10 @@ class Gateway():
 			except Exception as e:
 				print(str(e) + ' - heartbeat')
 
-    async def request(self, method, path, data, token=None):
-        base = "https://discord.com/api/v8"
-        if method == "POST":
-            r = requests.post(base + path, json=data, headers=f"Bot {token}")
+	async def request(self, method, path, data, token=None):
+		base = "https://discord.com/api/v8"
+		if method == "POST":
+			r = requests.post(base + path, json=data, headers=f"Bot {token}")
 
 	# async def listen(self, connection):  # sourcery no-metrics
 	# 	"""Listens to events from the gateway.
