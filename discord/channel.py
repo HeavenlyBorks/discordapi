@@ -21,9 +21,10 @@ class TextChannel():
     self.parent_id = c.get("parent_id", None)
     self.last_pin_timestamp = c.get("last_pin_timestamp", None)
 
-  def send(self, content=None, tts=None, file=None, embeds=None, mentions=None, reference=None, components=None, stickers=None):
-      payload = discord.make_payload(content, tts, file, embeds, mentions, reference, components, stickers)
+  async def send(self, content=None, tts=None, file=None, embeds=None, mentions=None, reference=None, components=None, stickers=None):
+      payload = discord.make_message_payload(content, tts, file, embeds, mentions, reference, components, stickers)
       r = discord.request("POST", f"/channels/{self.id}/messages", discord.token, data=payload)
+      return json.loads(r.text)
   
   def __repr__(self):
     return json.dumps(self)
@@ -31,6 +32,6 @@ class TextChannel():
   def __str__(self):
     return f"Guild {self.name}, id {self.id}"
 
-def get_channel(id):
+async def get_channel(id):
     r = discord.request("GET", f"/channels/{id}", discord.token)
     return discord.TextChannel(json.loads(r.text))

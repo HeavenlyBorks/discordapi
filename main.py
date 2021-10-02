@@ -14,6 +14,6 @@ async def on_message_create(msg):
             return
     except:
         pass
-    msg.channel.send("Hello World")
+    await msg.channel.send("Hello World")
 
 bot.start(token)

@@ -2,14 +2,14 @@ import discord
 
 __all__ = (
     "Message",
-    "make_payload"
+    "make_message_payload"
 )
 
 class Message():
     def __init__(self, m):
         self.id = m["id"]
         self.channel_id = m["channel_id"]
-        self.channel = discord.get_channel(self.channel_id)
+        self.channel = await discord.get_channel(self.channel_id)
         self.guild_id = m.get("guild_id", None)
         # self.guild = discord.get_guild(self.guild_id)
         self.webhook_id = m.get("webhook_id", None)
@@ -40,7 +40,7 @@ class Message():
         self.components = m.get("components", None)
         self.stickers = m.get("sticker_items", None)
     
-def make_payload(content=None, tts=None, file=None, embeds=None, mentions=None, reference=None, components=None, stickers=None):
+def make_message_payload(content=None, tts=None, file=None, embeds=None, mentions=None, reference=None, components=None, stickers=None):
     if not file:
         payload = {}
         if content:
