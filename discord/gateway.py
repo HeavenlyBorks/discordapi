@@ -6,12 +6,7 @@ import json
 import os
 import requests
 import traceback
-from dotenv import load_dotenv
 
-load_dotenv()
-
-BOT_TOKEN = os.getenv("DISCORD_TOKEN")
-print(BOT_TOKEN)
 wssURL = "wss://gateway.discord.gg/?v=8&encoding=json"
 
 __all__ = (
@@ -19,7 +14,7 @@ __all__ = (
 	"request",
 )
 
-def request(method, path, data, auth):
+def request(method, path, auth, data=None):
 	base = "https://discord.com/api/v8"
 	headers = {
 		"Authorization": f"Bot {auth}"
@@ -27,7 +22,7 @@ def request(method, path, data, auth):
 	if method == "POST":
 		r = requests.post(base + path, json=data, headers=headers)
 	elif method == "GET":
-		r = requests.get(base + path, json=data)
+		r = requests.get(base + path, headers=headers)
 	return r
 
 class Gateway():
@@ -49,7 +44,7 @@ class Gateway():
 		identify_json = {
 			"op": 2,
 			"d": {
-				"token": f"{BOT_TOKEN}",
+				"token": f"{discord.token}",
 				"intents": 32767,
 				"properties": {
 					"$os": "linux",

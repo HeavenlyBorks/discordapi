@@ -12,13 +12,13 @@ __all__ = (
 class Bot():
     def __init__(self):
         pass
-    
     # event maker
     def event(self, coro):
         setattr(self, coro.__name__[3:].upper(), coro)
         return coro
 
-    def start(self):
+    def start(self, token):
+        discord.token = token
         # Creating client object
         gateway = discord.Gateway(json=True) if sys.argv[0] == True else discord.Gateway()
         loop = asyncio.get_event_loop()
@@ -45,7 +45,7 @@ class Bot():
                     self.last_s = message["s"]
                     title = str(message["t"])
                     if hasattr(self, title):
-                        await getattr(self, title)(message["d"])
+                        await getattr(self, "_" + title)(message["d"])
                     # on_ready
                     # if title == "READY":
                     #     if self.json_v:
@@ -94,3 +94,6 @@ class Bot():
                 print("- listen")
                 break
 
+    async def _MESSAGE_CREATE(self, data):
+        msg = discord.Message(data)
+        await self.MESSAGE_CREATE(msg)
