@@ -23,6 +23,12 @@ def request(method, path, auth, data=None):
 		r = requests.post(base + path, json=data, headers=headers)
 	elif method == "GET":
 		r = requests.get(base + path, headers=headers)
+	elif method == "DELETE":
+		r = requests.delete(base + path, headers=headers)
+	elif method == "PUT":
+		r = requests.put(base + path, json=data, headers=headers)
+	elif method == "PATCH":
+		r = requests.patch(base + path, json=data, headers=headers)
 	return r
 
 class Gateway():
