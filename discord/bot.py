@@ -18,10 +18,10 @@ class Bot():
         return coro
 
     def start(self, token):
-        discord.token = token
         # Creating client object
         gateway = discord.Gateway(json=True) if sys.argv[0] == True else discord.Gateway()
         loop = asyncio.get_event_loop()
+        discord.set_globals(token, self, loop)
         # Start connection and get client connection protocol
         connection = loop.run_until_complete(gateway.start(loop))
         # Start listener and heartbeat 

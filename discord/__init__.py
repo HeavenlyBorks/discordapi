@@ -4,4 +4,10 @@ from .gateway import *
 from .channel import *
 from .message import *
 
-token = None
+def set_globals(t, b, l):
+    global token
+    global user_bot
+    global main_loop
+    token = t
+    user_bot = b
+    main_loop = l

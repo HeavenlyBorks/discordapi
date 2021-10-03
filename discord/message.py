@@ -1,4 +1,6 @@
 import discord
+import nest_asyncio
+nest_asyncio.apply()
 
 __all__ = (
     "Message",
@@ -9,7 +11,7 @@ class Message():
     def __init__(self, m):
         self.id = m["id"]
         self.channel_id = m["channel_id"]
-        self.channel = await discord.get_channel(self.channel_id)
+        self.channel = discord.main_loop.run_until_complete(discord.get_channel(self.channel_id))
         self.guild_id = m.get("guild_id", None)
         # self.guild = discord.get_guild(self.guild_id)
         self.webhook_id = m.get("webhook_id", None)

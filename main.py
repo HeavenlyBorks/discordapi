@@ -1,3 +1,4 @@
+# example bot for now - this example will showcase stuff that is functional atm
 import discord
 import requests
 import os
@@ -14,6 +15,6 @@ async def on_message_create(msg):
             return
     except:
         pass
-    await msg.channel.send("Hello World")
+    await msg.channel.send(f"{msg.content}? more like joe mama")
 
 bot.start(token)
