@@ -24,7 +24,7 @@ class TextChannel():
   async def send(self, content=None, tts=None, file=None, embeds=None, mentions=None, reference=None, components=None, stickers=None):
       payload = discord.make_message_payload(content, tts, file, embeds, mentions, reference, components, stickers)
       r = discord.request("POST", f"/channels/{self.id}/messages", discord.token, data=payload)
-      return json.loads(r.text)
+      return discord.Message(json.loads(r.text))
   
   def __repr__(self):
     return json.dumps(self)

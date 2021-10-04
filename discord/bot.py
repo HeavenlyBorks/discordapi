@@ -94,6 +94,9 @@ class Bot():
                 print("- listen")
                 break
 
+    # [---
+    #      OP code 0 interactions
+    #                             ---]
     async def _MESSAGE_CREATE(self, data):
         msg = discord.Message(data)
         await self.MESSAGE_CREATE(msg)

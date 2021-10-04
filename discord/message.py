@@ -1,4 +1,5 @@
 import discord
+import json
 import nest_asyncio
 nest_asyncio.apply()
 
@@ -41,6 +42,16 @@ class Message():
         self.thread = m.get("thread", None)
         self.components = m.get("components", None)
         self.stickers = m.get("sticker_items", None)
+    
+    async def delete(self):
+        r = discord.request("DELETE", f"/channels/{self.channel_id}/messages/{self.id}", discord.token)
+        return r
+    
+    async def edit(self, content=None, tts=None, file=None, embeds=None, mentions=None, reference=None, components=None, stickers=None):
+        payload = discord.make_message_payload(content, tts, file, embeds, mentions, reference, components, stickers)
+        r = discord.request("PATCH", f"/channels/{self.channel_id}/messages/{self.id}", discord.token, payload)
+        return discord.Message(json.loads(r.text))
+
     
 def make_message_payload(content=None, tts=None, file=None, embeds=None, mentions=None, reference=None, components=None, stickers=None):
     if not file:
