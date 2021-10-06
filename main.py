@@ -18,7 +18,7 @@ async def on_message_create(msg: discord.Message):
         pass
     funny = await msg.channel.send(f"{msg.content}? more like ur fat")
     await asyncio.sleep(3)
-    haha = await funny.edit("oh sorry i didn't mean it like that")
+    await funny.edit("oh sorry i didn't mean it like that")
     await asyncio.sleep(3)
     await funny.delete()
 

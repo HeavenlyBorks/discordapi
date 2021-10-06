@@ -4,6 +4,8 @@ import sys
 import json
 import traceback
 import requests
+import nest_asyncio
+nest_asyncio.apply()
 
 __all__ = (
     "Bot",
@@ -12,6 +14,7 @@ __all__ = (
 class Bot():
     def __init__(self):
         pass
+
     # event maker
     def event(self, coro):
         setattr(self, coro.__name__[3:].upper(), coro)
@@ -29,7 +32,6 @@ class Bot():
             asyncio.ensure_future(gateway.heartbeat(connection)),
             asyncio.ensure_future(self.listen(connection))
         ]
-
         loop.run_until_complete(asyncio.wait(tasks))
     
     # event listener
@@ -45,7 +47,7 @@ class Bot():
                     self.last_s = message["s"]
                     title = str(message["t"])
                     if hasattr(self, title):
-                        await getattr(self, "_" + title)(message["d"])
+                        asyncio.create_task(getattr(self, "_" + title)(message["d"]))
                     # on_ready
                     # if title == "READY":
                     #     if self.json_v:

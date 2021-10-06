@@ -4,6 +4,7 @@ import websockets
 import random
 import json
 import os
+import time
 import requests
 import traceback
 
@@ -29,6 +30,15 @@ def request(method, path, auth, data=None):
 		r = requests.put(base + path, json=data, headers=headers)
 	elif method == "PATCH":
 		r = requests.patch(base + path, json=data, headers=headers)
+	if r.status_code == 429:
+		print("You are being rate limited!")
+		try:
+			time.sleep(json.loads(r.text)["retry_after"])
+			print("running request again")
+			request(method, path, auth, data)
+		except:
+			return
+			# print(e)
 	return r
 
 class Gateway():
