@@ -14,7 +14,7 @@ class Message():
         self.channel_id = m["channel_id"]
         self.channel = discord.main_loop.run_until_complete(discord.get_channel(self.channel_id))
         self.guild_id = m.get("guild_id", None)
-        # self.guild = discord.get_guild(self.guild_id)
+        self.guild = discord.main_loop.run_until_complete(discord.get_guild(self.guild_id)) if self.guild_id else self.channel.guild_id
         self.webhook_id = m.get("webhook_id", None)
         self.author = m.get("author", None)
         # TODO: make a member class
@@ -50,7 +50,10 @@ class Message():
     async def edit(self, content=None, tts=None, file=None, embeds=None, mentions=None, reference=None, components=None, stickers=None):
         payload = discord.make_message_payload(content, tts, file, embeds, mentions, reference, components, stickers)
         r = discord.request("PATCH", f"/channels/{self.channel_id}/messages/{self.id}", discord.token, payload)
-        return discord.Message(json.loads(r.text))
+        r = json.loads(r.text)
+        r["guild_id"] = self.guild_id
+        r["channel_id"] = self.channel_id
+        return discord.Message(r)
 
     
 def make_message_payload(content=None, tts=None, file=None, embeds=None, mentions=None, reference=None, components=None, stickers=None):

@@ -19,11 +19,18 @@ class Bot():
     def event(self, coro):
         setattr(self, coro.__name__[3:].upper(), coro)
         return coro
+    
+    # exception handler I copied off the internet i sure do hope it works
+    def handle_exception(loop, context):
+        # context["message"] will always be there; but context["exception"] may not
+        msg = context.get("exception", context["message"])
+        print(f"Caught exception: {msg}")
 
     def start(self, token):
         # Creating client object
         gateway = discord.Gateway(json=True) if sys.argv[0] == True else discord.Gateway()
         loop = asyncio.get_event_loop()
+        loop.set_exception_handler(self.handle_exception)
         discord.set_globals(token, self, loop)
         # Start connection and get client connection protocol
         connection = loop.run_until_complete(gateway.start(loop))
@@ -95,6 +102,7 @@ class Bot():
                 print(e)
                 print("- listen")
                 break
+    
 
     # [---
     #      OP code 0 interactions

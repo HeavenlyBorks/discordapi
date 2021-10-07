@@ -3,6 +3,7 @@ from .bot import *
 from .gateway import *
 from .channel import *
 from .message import *
+from .guild import *
 
 def set_globals(t, b, l):
     global token

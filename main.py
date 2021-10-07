@@ -20,7 +20,8 @@ async def on_message_create(msg: discord.Message):
     await asyncio.sleep(3)
     await funny.edit("oh sorry i didn't mean it like that")
     await asyncio.sleep(3)
+    await funny.edit(f"don't you just love {msg.guild.name}?")
+    await asyncio.sleep(1)
     await funny.delete()
-
 
 bot.start(token)
