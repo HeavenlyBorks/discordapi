@@ -8,7 +8,7 @@ __all__ = (
     "make_message_payload"
 )
 
-class Message():
+class Message:
     def __init__(self, m):
         self.id = m["id"]
         self.channel_id = m["channel_id"]

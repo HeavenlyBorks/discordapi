@@ -41,7 +41,7 @@ def request(method, path, auth, data=None):
 			# print(e)
 	return r
 
-class Gateway():
+class Gateway:
   # """Represents a Discord Gateway."""
 	def __init__(self, json=False):
 		self.json_v = json

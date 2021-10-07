@@ -11,7 +11,7 @@ __all__ = (
     "Bot",
 )
 
-class Bot():
+class Bot:
     def __init__(self):
         pass
 

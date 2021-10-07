@@ -9,7 +9,7 @@ __all__ = (
     "get_channel",
 )
 
-class TextChannel():
+class TextChannel:
   def __init__(self, c):
     self.id = c["id"]
     self.guild_id = c.get("guild_id", None)
