@@ -1,6 +1,6 @@
 # discordapi
 
-Extremely rough Discord API wrapper. Not meant to be used as of now.
+Extremely rough Discord API wrapper. This project is abandoned. Do not use.
 
 # How to use:
 
